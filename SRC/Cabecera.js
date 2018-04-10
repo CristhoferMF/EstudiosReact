@@ -13,11 +13,9 @@ import {
   Button,
   AsyncStorage,
   TextInput,
-  TouchableNativeFeedback,
-  ScrollView
+  TouchableNativeFeedback
 } from 'react-native';
-import Estudio from './Estudio'
-import Cabecera from './Cabecera'
+
 const instructions = Platform.select({
   ios: 'Press Cmd+R to reload,\n' +
     'Cmd+D or shake for dev menu',
@@ -26,25 +24,28 @@ const instructions = Platform.select({
 });
 
 type Props = {};
-export default class App extends Component<Props> {
+export default class Cabecera extends Component<Props> {
   
   render() {
     return (
-      <View style={styles.container}>
-        <Cabecera/>
-        <ScrollView>
-          <Estudio/>
-          <Estudio/>
-          <Estudio/>
-          <Estudio/>
-        </ScrollView>
+      <View style={styles.cabecera}>
+        <Text style={styles.texto}>Mis estudios</Text>
       </View>
     );
   }
 }
 
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-  },
+  cabecera: {
+    height: 57,
+    backgroundColor: '#FF5722',
+    elevation: 3,
+    justifyContent: 'center',
+  },texto:{
+    marginLeft: 20,
+    color: '#ffff',
+    fontFamily: 'IBMRegular',
+    fontSize: 23
+  }
+
 });
