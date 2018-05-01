@@ -25,34 +25,34 @@ const instructions = Platform.select({
 
 type Props = {};
 export default class Estudio extends Component<Props> {
-  
+
+
   render() {
+     const { id,nombre,apellidos,edad,publicacion,ufecha,ucapitulo,uparrafo} = this.props.listestudiante;
     return (
-      <TouchableNativeFeedback onPress={()=>{}}>
         <View style={styles.caja}>
           <View style={styles.titulo}>
-            <Text style={styles.nombres}>Valeriano Rivero</Text>
+            <Text style={styles.nombres}>{nombre} {apellidos}</Text>
             <View style={styles.edadContainer}>
-              <Text style={styles.edad}>80 años</Text>
+              <Text style={styles.edad}>{edad} años</Text>
             </View>
           </View>
           <View style={{borderBottomColor: 'lightgray',borderBottomWidth: 1,marginVertical:7,}}/>
           <View style={styles.informacion}>
             <Text style={styles.campo}>Última visita: </Text>
-            <Text style={styles.campoI}>06 de abril del 2018</Text>
+            <Text style={styles.campoI}>{ufecha}</Text>
           </View>
           <View style={styles.informacion}>
             <View style={styles.row}>
               <Text style={styles.campo}>Publicación: </Text>
-              <Text style={styles.campoI}>Libro Enseña</Text>
+              <Text style={styles.campoI}>{publicacion}</Text>
             </View>
             <View style={styles.row2}>
               <Text style={styles.campo}>Cap: </Text>
-              <Text style={styles.campoI}>1-21</Text>
+              <Text style={styles.campoI}>{ucapitulo}-{uparrafo}</Text>
             </View>
           </View>
         </View>
-      </TouchableNativeFeedback>
     );
   }
 }

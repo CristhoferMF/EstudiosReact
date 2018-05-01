@@ -9,11 +9,11 @@ import {
   Platform,
   StyleSheet,
   View,
-  TouchableNativeFeedback
 } from 'react-native';
-import Principal from './route/Principal'
-import Detalle from './route/Detalle'
-import { StackNavigator } from 'react-navigation';
+
+import Estudiantes from '../Estudiantes'
+import Cabecera from '../Cabecera'
+import {getEstudiantes} from '../API/Lista'
 
 const instructions = Platform.select({
   ios: 'Press Cmd+R to reload,\n' +
@@ -24,28 +24,28 @@ const instructions = Platform.select({
 
 type Props = {};
 export default class App extends Component<Props> {
+  constructor(props) {
+    super(props);
+    this.state = this.props.navigation.state.params;
+  }
+  obtenernombre(){
+    return this.state.nombre+' '+this.state.apellidos;
+  }
+  
+  static navigationOptions = {
+    header: null,
+  }
 
   render() {
+    console.warn(this.state)
     return (
-        <RootStack/>
+      <View style={styles.container}>
+        <Cabecera datos={this.obtenernombre()}/>
+        
+      </View>
     );
   }
 }
-
-const RootStack = StackNavigator(
-  {
-    Principal: {
-      screen: Principal,
-    },
-    Detalle: {
-      screen: Detalle,
-    },
-  },
-  {
-    initialRouteName: 'Principal',
-    header: null
-  }
-);
 
 const styles = StyleSheet.create({
   container: {

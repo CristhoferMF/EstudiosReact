@@ -29,7 +29,7 @@ export default class Cabecera extends Component<Props> {
   render() {
     return (
       <View style={styles.cabecera}>
-        <Text style={styles.texto}>Mis estudios</Text>
+        <Text style={styles.texto}>{this.props.datos}</Text>
       </View>
     );
   }
