@@ -28,13 +28,13 @@ export default class ModalDetalle extends Component<Props> {
   constructor(props) {
     super(props);
     this.state = {
-      isModal: props.propiedades
+      isModal: props.propiedades.prop
     }
   }
 
   componentWillReceiveProps(newProps){
     if(newProps.propiedades !== this.props.propiedades){
-        this.setState({isModal:newProps.propiedades})
+        this.setState({isModal:newProps.propiedades.prop})
     }
   }
   render() {
@@ -47,9 +47,9 @@ export default class ModalDetalle extends Component<Props> {
         style={styles.bottomModal}
         isVisible={this.state.isModal}
         animationInTiming={200}
-        onSwipe={() => this.setState({isModal:false}) }
-        onBackButtonPress={() => this.setState({isModal:false}) }
-        onBackdropPress={() => this.setState({isModal:false}) }
+        onSwipe={() => this.props.propiedades.esto.cerrarmodal() }
+        onBackButtonPress={() => this.props.propiedades.esto.cerrarmodal() }
+        onBackdropPress={() => this.props.propiedades.esto.cerrarmodal() }
         backdropOpacity={0.6}
         swipeDirection="down"
       >

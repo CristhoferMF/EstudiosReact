@@ -38,10 +38,9 @@ export default class App extends Component<Props> {
     this.state = this.props.navigation.state.params;
     this.state.refreshing=false;
     this.state.error=false;
+    this.state.listadetalles=null;
   }
-  state={
-    listadetalles:null,
-  }
+  
   actualizar(){
     return getDetalleEstudiantes(this.state.id)
     .then((data) => this.setState({listadetalles:data}))

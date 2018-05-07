@@ -26,15 +26,25 @@ const instructions = Platform.select({
 
 type Props = {};
 export default class Cabecera extends Component<Props> {
-  state = {
-    isVisible: false,
-  };
+  constructor(props){
+    super(props);
+      this.state = {
+        isVisible: false,
+      }
+  }
+  
+  cerrarmodal(){
+    this.setState({isVisible:false});
+  }
 
   render() {
+    const propiedades={
+        prop:this.state.isVisible,
+        esto:this,
+    }
     return (
       <View style={styles.cabecera}>
-
-      <ModalDetalle propiedades={this.state.isVisible}/>
+      <ModalDetalle propiedades={propiedades}/>
 
       { this.props.datos.back==true && <TouchableNativeFeedback onPress={() => this.props.datos.atras.atras()}>
       <View>
