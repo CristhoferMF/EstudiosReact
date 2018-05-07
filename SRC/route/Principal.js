@@ -13,8 +13,8 @@ import {
   TouchableNativeFeedback
 } from 'react-native';
 
-import Estudiantes from '../Estudiantes'
-import Cabecera from '../Cabecera'
+import Estudiantes from '../component/principal/Estudiantes'
+import Cabecera from '../component/Cabecera'
 import {getEstudiantes} from '../API/Lista'
 
 const instructions = Platform.select({
@@ -43,9 +43,13 @@ export default class App extends Component<Props> {
 
   render() {
     const listestudiantes=this.state.listestudiantes;
+    const datos={
+      nombre:'Mis Estudios',
+      back:false
+    }
     return (
       <View style={styles.container}>
-      <Cabecera datos={'Mis estudios'}/>
+      <Cabecera datos={datos} />
         <Estudiantes listestudiantes={listestudiantes} action={this} />
       </View>
     );

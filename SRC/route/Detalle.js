@@ -18,8 +18,8 @@ import {
   ActivityIndicator
 } from 'react-native';
 
-import EstudiantesDetalle from '../EstudiantesDetalle'
-import Cabecera from '../Cabecera'
+import EstudiantesDetalle from '../component/detalle/EstudiantesDetalle'
+import Cabecera from '../component/Cabecera'
 import {getDetalleEstudiantes} from '../API/ListaDetalle'
 import Icon from 'react-native-vector-icons/Ionicons'
 
@@ -82,6 +82,9 @@ export default class App extends Component<Props> {
       ToastAndroid.show('Sin conexion', ToastAndroid.SHORT);
     });
   }
+  atras = () =>{
+      this.props.navigation.goBack()
+  }
   render() {
 
     const error = <TouchableNativeFeedback onPress={() => this.reconectar()}>
@@ -96,10 +99,14 @@ export default class App extends Component<Props> {
                   </TouchableNativeFeedback>;
 
     const listadetalles=this.state.listadetalles;
-
+    const datos={
+      nombre:this.obtenernombre(),
+      back:true,
+      atras:this,
+    }
     return (
       <View style={styles.container}>
-        <Cabecera datos={this.obtenernombre()}/>
+        <Cabecera datos={datos}/>
         <ScrollView refreshControl={
             <RefreshControl
             refreshing={this.state.refreshing}

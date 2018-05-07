@@ -30,6 +30,7 @@ export default class Estudio extends Component<Props> {
   render() {
      const { id,nombre,apellidos,edad,publicacion,ufecha,ucapitulo,uparrafo} = this.props.listestudiante;
     return (
+       <TouchableNativeFeedback onPress={() => this.props.action2.mover('Detalle',this.props.listestudiante)}>
         <View style={styles.caja}>
           <View style={styles.titulo}>
             <Text style={styles.nombres}>{nombre} {apellidos}</Text>
@@ -53,6 +54,7 @@ export default class Estudio extends Component<Props> {
             </View>
           </View>
         </View>
+        </TouchableNativeFeedback>
     );
   }
 }

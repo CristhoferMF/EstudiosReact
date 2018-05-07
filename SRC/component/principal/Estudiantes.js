@@ -48,9 +48,8 @@ export default class Estudiantes extends Component<Props> {
         dataSource={this.state.dataSource}
         renderRow={(listestudiante) => {
           return (
-            <TouchableOpacity onPress={() => this.props.action.mover('Detalle',listestudiante)}>
-            <Estudio listestudiante={listestudiante}/>
-            </TouchableOpacity>)}
+            <Estudio listestudiante={listestudiante} action2={this.props.action}/>
+            )}
           }
       />
     );
