@@ -12,6 +12,7 @@ import {
   View,
   Alert,
   Button,
+  TextInput,
   TouchableNativeFeedback,
 } from 'react-native';
 import Icon from 'react-native-vector-icons/Ionicons'
@@ -53,8 +54,23 @@ export default class ModalDetalle extends Component<Props> {
         backdropOpacity={0.6}
         swipeDirection="down"
       >
-        <View style={{ backgroundColor: 'white',height: 250}}>
-          <Text>I am the modal content!</Text>
+        <View style={styles.container}>
+          <Text style={styles.titulo}>Agregar visita</Text>
+            <TextInput style={styles.input} placeholder="Capitulo (1,2,3,..)"
+            keyboardType="numeric"
+            returnKeyType="next"
+            blurOnSubmit={ false }
+            onSubmitEditing={() => {this.nextInput.focus()}}/>
+            <TextInput style={styles.input} placeholder="Parrafo Final (1,2,3,..)"
+            keyboardType="numeric"
+            returnKeyType="done"
+            blurOnSubmit={ false }
+            ref={nextInput => this.nextInput = nextInput}/>
+            <TouchableNativeFeedback>
+            <View style={styles.boton}>
+            <Text style={styles.labelboton}>AGREGAR</Text>
+            </View>
+            </TouchableNativeFeedback>
         </View>
       </Modal>
       </View>
@@ -63,28 +79,37 @@ export default class ModalDetalle extends Component<Props> {
 }
 
 const styles = StyleSheet.create({
-  cabecera: {
-    height: 57,
-    flexDirection: 'row',
-    backgroundColor: '#FF5722',
-    elevation: 4,
-    alignItems: 'center',
-  },texto:{
-    color: '#ffff',
-    fontWeight:  '500',
-    fontFamily: 'IBMRegular',
-    fontSize: 23,
-    flex: 1
-  },texto2:{
-    color: '#ffff',
-    fontWeight:  '500',
-    fontFamily: 'IBMRegular',
-    fontSize: 23,
-    paddingLeft: 20,
-    flex: 1
-  },bottomModal: {
+  bottomModal: {
     justifyContent: "flex-end",
     margin: 0
-},
+},container:{
+  backgroundColor: 'white',
+  width:'100%',
+  flexDirection:'column',
+  height: 250
+},titulo:{
+  paddingHorizontal:18,
+  fontSize:18,
+  fontWeight:'400',
+  color:'black',
+  paddingTop:20
+},input:{
+  width:'93%',
+  alignSelf :'center',
+  fontFamily :'IBMLight',
+  paddingLeft:10
+},boton:{
+  width:80,
+  justifyContent:'center',
+  alignContent:'center',
+  alignSelf:'flex-end',
+  padding:5,
+  marginRight:10,
+  marginTop:10
+
+},labelboton:{
+  color:'#FF5722',
+  fontFamily :'IBMRegular',
+}
 
 });
