@@ -41,6 +41,8 @@ export default class Cabecera extends Component<Props> {
     const propiedades={
         prop:this.state.isVisible,
         esto:this,
+        codigo:this.props.datos.id,
+        detalleprincipal:this.props.datos.atras
     }
     return (
       <View style={styles.cabecera}>

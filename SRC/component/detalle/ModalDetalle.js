@@ -14,10 +14,13 @@ import {
   Button,
   TextInput,
   TouchableNativeFeedback,
-  TouchableOpacity
+  TouchableOpacity,
+  ScrollView,
+  ToastAndroid
 } from 'react-native';
 import Icon from 'react-native-vector-icons/Ionicons'
 import Modal from "react-native-modal";
+import {addSesiones} from '../../API/insertSesiones'
 import DateTimePicker from 'react-native-modal-datetime-picker';
 
 const instructions = Platform.select({
@@ -34,7 +37,12 @@ export default class ModalDetalle extends Component<Props> {
     this.state = {
       isModal: props.propiedades.prop,
       isDateTimePickerVisible: false,
-      fechaEscogida: "Escoger fecha"
+      id:props.propiedades.codigo,
+      fechaletra: "Escoger fecha",
+      fecha:null,
+      capitulo:"",
+      parrafo:"",
+      observacion:"Ninguna"
     }
   }
 
@@ -53,8 +61,10 @@ export default class ModalDetalle extends Component<Props> {
     let dia=date.getDate();
     let mes=date.getMonth()+1;
     let ano=date.getFullYear();
+    const fechan=ano+"-"+mes+"-"+dia;
     //console.warn('A date has been picked: ', date );
-    this.setState({fechaEscogida:this.fechaletra(date)});
+    this.setState({fechaletra:this.fechaletra(date)});
+    this.setState({fecha:fechan});
     this._hideDateTimePicker();
   };
 
@@ -65,8 +75,53 @@ export default class ModalDetalle extends Component<Props> {
   }
   cerrarModal(){
     this.props.propiedades.esto.cerrarmodal();
-    this.setState({fechaEscogida:"Escoger fecha"});
+    this.limpiarform();
   }
+  limpiarform(){
+    this.setState({fechaletra:"Escoger fecha"});
+    this.setState({capitulo:""});
+    this.setState({parrafo:""});
+    this.setState({observacion:""});
+  }
+  buttonsend(){
+    Alert.alert(
+  'Agregar',
+  'Se agregará la visita al registro',
+  [
+    {text: 'Cancelar', onPress: () => {}},
+    {text: 'OK', onPress: () => this.enviarForm()},
+  ],
+  { cancelable: false }
+)
+  }
+  enviarForm(){
+    if(this.state.id != "" &&
+      this.state.fecha != null &&
+      this.state.capitulo != "" &&
+      this.state.parrafo != "" &&
+      this.state.observacion != "" ){
+
+        addSesiones(this.state.id,
+      this.state.fecha,
+      this.state.capitulo,
+      this.state.parrafo,
+      this.state.observacion)
+    .then( (data) => {
+      if(data.result =="TRUE"){
+        ToastAndroid.show('Se agrego la visita', ToastAndroid.SHORT);
+        this.props.propiedades.detalleprincipal._onRefresh();
+        this.limpiarform();
+      }else{
+        ToastAndroid.show('Hubo un error, Asegurese de ingresar datos correctos', ToastAndroid.SHORT)
+      }
+    })
+    .catch((error) => ToastAndroid.show('Error en el servidor '+error, ToastAndroid.SHORT));
+  
+    }else{
+      ToastAndroid.show('Llene todos los campos', ToastAndroid.SHORT);
+    }
+    }
+
   render() {
     
     return (
@@ -92,25 +147,42 @@ export default class ModalDetalle extends Component<Props> {
         swipeDirection="down"
       >
         <View style={styles.container}>
+        
           <Text style={styles.titulo}>Agregar visita</Text>
+          <ScrollView>
       <TouchableOpacity onPress={this._showDateTimePicker}>
-          <Text style={styles.fecha}>{this.state.fechaEscogida}</Text>
+          <Text style={styles.fecha}>{this.state.fechaletra}</Text>
         </TouchableOpacity>
             <TextInput style={styles.input} placeholder="Capitulo (1,2,3,..)"
             keyboardType="numeric"
             returnKeyType="next"
             blurOnSubmit={ false }
-            onSubmitEditing={() => {this.nextInput.focus()}}/>
+            value={this.state.capitulo}
+            onChangeText={(val)=>  this.setState({capitulo:val})}
+            onSubmitEditing={() => {this.parrafoInput.focus()}}/>
             <TextInput style={styles.input} placeholder="Parrafo Final (1,2,3,..)"
             keyboardType="numeric"
-            returnKeyType="done"
+            returnKeyType="next"
             blurOnSubmit={ false }
-            ref={nextInput => this.nextInput = nextInput}/>
-            <TouchableNativeFeedback onPress={() => console.warn('Listo')}>
+            value={this.state.parrafo}
+            ref={input => this.parrafoInput = input}
+            onChangeText={(val)=>  this.setState({parrafo:val})}
+            onSubmitEditing={() => {this.observacionInput.focus()}}/>
+            <TextInput
+              ref={input => this.observacionInput = input}
+              style={styles.input2}
+              returnKeyType="done"
+              blurOnSubmit={ false }
+              value={this.state.observacion}
+              onChangeText={(val)=>  this.setState({observacion:val})}
+              placeholder="Observación"
+            />
+            <TouchableNativeFeedback onPress={() => this.buttonsend()}>
             <View style={styles.boton}>
             <Text style={styles.labelboton}>AGREGAR</Text>
             </View>
             </TouchableNativeFeedback>
+            </ScrollView>
         </View>
       </Modal>
       </View>
@@ -126,22 +198,26 @@ const styles = StyleSheet.create({
   backgroundColor: 'white',
   width:'100%',
   flexDirection:'column',
-  height: 255
+  height: 310
 },titulo:{
-  paddingHorizontal:18,
+  paddingHorizontal:15,
   paddingBottom:15,
   fontSize:18,
   fontWeight:'400',
   color:'white',
   paddingTop:15,
   backgroundColor:'#FF5722',
-  elevation:2,
   fontWeight:'500'
 },input:{
   width:'93%',
   alignSelf :'center',
   fontFamily :'IBMLight',
-  paddingLeft:10
+  paddingLeft:10,
+},input2:{
+  width:'93%',
+  alignSelf :'center',
+  fontFamily :'IBMLight',
+  paddingLeft:10,
 },boton:{
   width:80,
   justifyContent:'center',
@@ -149,7 +225,7 @@ const styles = StyleSheet.create({
   alignSelf:'flex-end',
   padding:5,
   marginRight:10,
-  marginTop:10
+  marginVertical:10
 },labelboton:{
   color:'#FF5722',
   fontFamily :'IBMRegular',
@@ -160,6 +236,9 @@ const styles = StyleSheet.create({
   textAlign:'center',
   paddingVertical:10,
   fontSize:16,
+  marginTop:10,
+  borderWidth: 0.5,
+  borderColor: '#d6d7da',
 } 
 
 });

@@ -100,6 +100,7 @@ export default class App extends Component<Props> {
     const listadetalles=this.state.listadetalles;
     const datos={
       nombre:this.obtenernombre(),
+      id:this.state.id,
       back:true,
       atras:this,
     }
